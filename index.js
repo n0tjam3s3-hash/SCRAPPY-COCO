@@ -5,22 +5,20 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 
-// 🧭 This route fetches user-owned gamepasses
+// ✅ This fetches passes even when Inventory API fails
 app.get("/v1/users/:userId/assets/9", async (req, res) => {
   const userId = req.params.userId;
-  const target = `https://inventory.roblox.com/v1/users/${userId}/assets/9`;
+  const target = `https://economy.roblox.com/v2/users/${userId}/game-passes?sortOrder=Asc&limit=100`;
 
   try {
     const response = await fetch(target, {
       headers: {
-        "User-Agent": "RobloxProxy/1.0", // 👈 important!
+        "User-Agent": "RobloxProxy/1.0",
         "Accept": "application/json"
       }
     });
 
     const body = await response.text();
-
-    // Forward the response back to your Roblox game
     res.setHeader("Content-Type", "application/json");
     res.status(response.status).send(body);
   } catch (err) {
