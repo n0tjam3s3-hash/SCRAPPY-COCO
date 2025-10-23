@@ -5,14 +5,14 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 
-// forwards: /v1/users/:userId/assets/9  →  Roblox Inventory API (gamepasses)
+// 🧭 Route to fetch the user's gamepasses
 app.get("/v1/users/:userId/assets/9", async (req, res) => {
   const userId = req.params.userId;
   const target = `https://inventory.roblox.com/v1/users/${userId}/assets/9`;
 
   try {
     const response = await fetch(target);
-    const body = await response.text(); // keep as text to pass through raw
+    const body = await response.text();
     res.setHeader("Content-Type", "application/json");
     res.status(response.status).send(body);
   } catch (err) {
@@ -21,7 +21,9 @@ app.get("/v1/users/:userId/assets/9", async (req, res) => {
   }
 });
 
+// 🚀 Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`✅ Proxy server running on port ${PORT}`);
 });
+
